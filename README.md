@@ -1,6 +1,6 @@
 # foreign_key_validation
 
-Protect your models by specifying a collection of foreign keys that should be tested for consistency with the `belongs_to` relations. For example, When the `user_id` is used in all models we can check if the `user_id` of `model a` matches `user_id` of `model b` before saving the records.
+Protect your models by specifying a collection of foreign keys that should be tested for consistency with the `belongs_to` relations. For example, when the `user_id` is used in all models we can check if the `user_id` of `model a` matches `user_id` of `model b` before saving the records.
 
 ## Installation
 
