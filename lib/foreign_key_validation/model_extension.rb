@@ -18,7 +18,6 @@ module ForeignKeyValidation
     end
 
     module ClassMethods
-
       def validate_foreign_keys(on: :user_id, with: nil)
         key_to_validate_against = on.to_s
 
@@ -40,13 +39,9 @@ module ForeignKeyValidation
 
         # add before filter
         before_validation "validate_foreign_keys_on_#{key_to_validate_against}"
-
       end
-
     end
-
   end
-
 end
 
 ActiveRecord::Base.send :include, ForeignKeyValidation::ModelExtension
