@@ -1,0 +1,5 @@
+Object.send(:remove_const, :User)     if Object.constants.include?(:User)
+Object.send(:remove_const, :Project)  if Object.constants.include?(:Project)
+Object.send(:remove_const, :Idea)     if Object.constants.include?(:Idea)
+Object.send(:remove_const, :Issue)    if Object.constants.include?(:Issue)
+Object.send(:remove_const, :Comment)  if Object.constants.include?(:Comment)
