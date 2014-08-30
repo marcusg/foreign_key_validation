@@ -2,6 +2,9 @@
 
 Protect your models by specifying a collection of foreign keys that should be tested for consistency with the `belongs_to` relations. For example, when the `user_id` is used in all models we can check if the `user_id` of `model a` matches `user_id` of `model b` before saving the records.
 
+## Requirements
+    rails >= 3.2
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -28,7 +31,7 @@ This would only check `model.project.admin_user_id` to match `model.admin_user_i
 
 ## Note
 
-Only testet with ruby 2.x
+Only tested with ruby 2.x and ActiveRecord
 
 ## TODO
 
