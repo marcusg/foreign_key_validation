@@ -20,16 +20,16 @@ module ForeignKeyValidation
     module ClassMethods
 
       def validate_foreign_keys(on: :user_id, with: nil)
-        key_to_validate_against = on
+        key_to_validate_against = on.to_s
 
         # check if key_to_validate_against is present as column
-        raise ArgumentError, "No foreign key #{key_to_validate_against} on #{self.table_name} table!" unless self.column_names.include?(key_to_validate_against.to_s)
+        raise ArgumentError, "No foreign key #{key_to_validate_against} on #{self.table_name} table!" unless self.column_names.include?(key_to_validate_against)
 
         # use provided 'with' array or column_names from self to get all foreign keys
         keys_to_validate_with = (Array(with).map(&:to_s) if with) || self.column_names.select {|n| n.match(/\w_id/)}
 
         # reject keys that match either the key_to_validate_against or the current class name key (needed for sti models)
-        keys_to_validate_with.reject! {|n| n.to_s == key_to_validate_against.to_s || n.to_s == "#{self.class.name.underscore}_id"  }
+        keys_to_validate_with.reject! {|n| n == key_to_validate_against || n == "#{self.class.name.underscore}_id"  }
 
         define_method "validate_foreign_keys_on_#{key_to_validate_against}" do
           keys_to_validate_with.each do |validation_key|
