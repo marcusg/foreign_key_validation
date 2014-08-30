@@ -3,6 +3,7 @@ module ForeignKeyValidation
     extend ActiveSupport::Concern
 
     included do
+      private
       def validate_foreign_key(key_to_validate_against, validation_key)
         relation = validation_key.gsub('_id', '')
 
@@ -31,12 +32,13 @@ module ForeignKeyValidation
         keys_to_validate_with.reject! {|n| n.to_s == key_to_validate_against.to_s || n.to_s == "#{self.class.name.underscore}_id"  }
 
         define_method "validate_foreign_keys_on_#{key_to_validate_against}" do
-
           keys_to_validate_with.each do |validation_key|
             validate_foreign_key(key_to_validate_against, validation_key)
           end
-
         end
+        private "validate_foreign_keys_on_#{key_to_validate_against}".to_sym
+
+        # add before filter
         before_validation "validate_foreign_keys_on_#{key_to_validate_against}"
 
       end
