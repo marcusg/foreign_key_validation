@@ -6,6 +6,7 @@ ActiveRecord::Schema.define do
 
   create_table "projects", force: true do |t|
     t.integer   "user_id"
+    t.integer   "member_id"
   end
 
   create_table "ideas", force: true do |t|
@@ -24,6 +25,12 @@ ActiveRecord::Schema.define do
   end
 
   create_table "dummies", force: true do |t|
+  end
+
+  create_table "members", force: true do |t|
+    t.integer   "user_id"
+    t.integer   "manager_id"
+    t.string    "type"
   end
 
 end

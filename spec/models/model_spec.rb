@@ -54,6 +54,7 @@ describe ForeignKeyValidation::ModelExtension do
       Project.send :validate_foreign_keys
       Issue.send :validate_foreign_keys
       Comment.send :validate_foreign_keys
+      Member.send :validate_foreign_keys # sti model
     end
 
     let(:user) { User.create }
@@ -61,6 +62,9 @@ describe ForeignKeyValidation::ModelExtension do
     let(:idea) { Idea.create user: user, project: project }
     let(:issue) { Issue.create user: user, project: project }
     let(:comment) { Comment.create user: user, issue: issue }
+    # sti model
+    let(:manager) { Manager.create user: user }
+    let(:developer) { Developer.create user: user, manager: manager }
 
     it "uses same user ids by default" do
       expect(project.user_id).to eq(user.id)
@@ -93,6 +97,13 @@ describe ForeignKeyValidation::ModelExtension do
       project.save
       expect(project.errors).to be_empty
       expect(project.reload.user_id).to eq(42)
+    end
+
+    it "does not allow to rewrite user id of developer", focus: true do
+      developer.user_id = 42
+      developer.save
+      # expect(developer.errors.messages.values.flatten).to include("user of issue does not match developers user")
+      expect(developer.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to call private validate_foreign_key method" do
