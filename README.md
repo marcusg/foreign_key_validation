@@ -3,6 +3,7 @@
 Protect your models by specifying a collection of foreign keys that should be tested for consistency with the `belongs_to` relations. For example, when the `user_id` is used in all models we can check if the `user_id` of `model a` matches `user_id` of `model b` before saving the records.
 
 ## Requirements
+    ruby >= 1.9
     rails
     active_record
 
@@ -26,18 +27,17 @@ Call `validate_foreign_keys` in your model. By default it assumes that it should
 
 Change behaviour by calling `validate_foreign_keys` with arguments hash.
 
-	validate_foreign_keys on: :admin_user_id, with: [:project]
+    validate_foreign_keys on: :admin_user, with: [:project]
 
 This would only check `model.project.admin_user_id` to match `model.admin_user_id`.
 
 ## Note
 
-Only tested with ruby 2.x and ActiveRecord
+Only tested with ActiveRecord
 
 ## TODO
 
 - Tests!
-- Support Ruby 1.9 (remove keyword arguments)
 
 ## Contributing
 

@@ -106,6 +106,56 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
+  context "With calling validation with attributes hash" do
+    before do
+      Idea.class_eval do
+        validate_foreign_keys on: :user, with: :project
+      end
+    end
+
+    # NOTE: it's important here to not create the object through relation (user.projects.create...)
+    #       it looks like active_record is caching the classes - but we need to test different class configs
+    let(:user) { User.create }
+    let(:project) { Project.create user: user }
+    let(:idea) { Idea.create user: user, project: project }
+    let(:issue) { Issue.create user: user, project: project }
+    let(:comment) { Comment.create user: user, issue: issue }
+
+    it "uses same user ids by default" do
+      expect(project.user_id).to eq(user.id)
+      expect(idea.user_id).to eq(user.id)
+    end
+
+    it "does not allow to rewrite user id of idea" do
+      idea.user_id = 42
+      idea.save
+      expect(idea.errors.messages.values.flatten).to include("user of project does not match ideas user")
+      expect(idea.reload.user_id).to_not eq(42)
+    end
+
+    it "allow to rewrite user id of project" do
+      project.user_id = 42
+      project.save
+      project.reload
+      expect(project.user_id).to eq(42)
+    end
+
+    it "allow to rewrite user id of issue" do
+      issue.user_id = 42
+      issue.save
+      issue.reload
+      expect(issue.user_id).to eq(42)
+    end
+
+    it "allow to rewrite user id of comment" do
+      comment.user_id = 42
+      comment.save
+      comment.reload
+      expect(comment.user_id).to eq(42)
+    end
+
+  end
+
   context "With calling validation with wrong attributes hash" do
 
     # NOTE: it's important here to not create the object through relation (user.projects.create...)
