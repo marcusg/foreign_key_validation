@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Marcus Geißler"]
   spec.email         = ["marcus3006@gmail.com"]
   spec.summary       = %q{Protect the foreign keys in your Rails models.}
-  spec.description   = %q{Protect the foreign keys in your Rails models. Really.}
+  spec.description   = %q{Protect the foreign keys in your Rails models by checking the user_id of self against the user_id of all relations.}
   spec.homepage      = "https://github.com/marcusg/foreign_key_validation"
   spec.license       = "MIT"
 

@@ -6,7 +6,7 @@ module ForeignKeyValidation
       private
       def validate_foreign_key(validate_against, relation)
         if send(relation).send("#{validate_against}_id") != send("#{validate_against}_id")
-          errors.add(validate_against, "#{validate_against} of #{relation} does not match #{self.class.name.tableize} #{validate_against}")
+          errors.add(validate_against, "#{validate_against} of #{relation} does not match #{self.class.table_name} #{validate_against}")
         end
       end
     end
