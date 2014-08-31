@@ -35,9 +35,6 @@ This would only check `model.project.admin_user_id` to match `model.admin_user_i
 
 Only tested with ActiveRecord
 
-## TODO
-
-- Tests!
 
 ## Contributing
 
