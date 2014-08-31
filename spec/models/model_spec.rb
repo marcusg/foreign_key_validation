@@ -71,21 +71,21 @@ describe ForeignKeyValidation::ModelExtension do
     it "does not allow to rewrite user id of idea" do
       idea.user_id = 42
       idea.save
-      expect(idea.errors.messages.values.flatten).to include("user_id of project does not match ideas user_id")
+      expect(idea.errors.messages.values.flatten).to include("user of project does not match ideas user")
       expect(idea.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to rewrite user id of issue" do
       issue.user_id = 42
       issue.save
-      expect(issue.errors.messages.values.flatten).to include("user_id of project does not match issues user_id")
+      expect(issue.errors.messages.values.flatten).to include("user of project does not match issues user")
       expect(issue.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to rewrite user id of comment" do
       comment.user_id = 42
       comment.save
-      expect(comment.errors.messages.values.flatten).to include("user_id of issue does not match comments user_id")
+      expect(comment.errors.messages.values.flatten).to include("user of issue does not match comments user")
       expect(comment.reload.user_id).to_not eq(42)
     end
 
@@ -101,7 +101,7 @@ describe ForeignKeyValidation::ModelExtension do
     end
 
     it "does not allow to call private validate_foreign_keys_on_* methods" do
-      expect{issue.validate_foreign_keys_on_user_id}.to raise_exception(/private method `validate_foreign_keys_on_user_id' called/)
+      expect{issue.validate_foreign_keys_on_user}.to raise_exception(/private method `validate_foreign_keys_on_user' called/)
     end
 
   end
@@ -119,14 +119,8 @@ describe ForeignKeyValidation::ModelExtension do
       expect{Idea.class_eval { validate_foreign_keys on: :not_existing_id }}.to raise_error("No foreign key not_existing_id on ideas table!")
     end
 
-    it "does not validate due to wrong :with key" do
-      Issue.class_eval do
-        validate_foreign_keys with: :not_existing_id
-      end
-      issue.user_id = 42
-      issue.save
-      issue.reload
-      expect(issue.user_id).to eq(42)
+    it "raises error due to wrong :with key" do
+      expect{Idea.class_eval { validate_foreign_keys with: :not_existing_id }}.to raise_error('Unknown relation in ["not_existing_id"]!')
     end
 
   end
