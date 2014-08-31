@@ -3,14 +3,10 @@ require 'spec_helper'
 describe ForeignKeyValidation::ModelExtension do
 
   context "Without calling validation" do
-    before(:each) do
-      load "support/reset_models.rb"
-      load "support/load_models.rb"
-    end
-
-    let(:user) { User.create }
-    let(:project) { user.projects.create }
-    let(:idea) { project.ideas.create user: user }
+    # NOTE: it's important here to not create the object through relation (user.projects.create...)
+    let!(:user) { User.create }
+    let!(:project) { Project.create user: user }
+    let!(:idea) { Idea.create user: user, project: project }
 
     it "uses same user ids by default" do
       expect(project.user_id).to eq(user.id)
@@ -34,18 +30,15 @@ describe ForeignKeyValidation::ModelExtension do
   end
 
   context "With calling validation" do
-    before(:each) do
-
-      load "support/reset_models.rb"
-      load "support/load_models.rb"
+    before do
       Idea.instance_eval do
         validate_foreign_keys
       end
     end
-
-    let(:user) { User.create }
-    let(:project) { user.projects.create }
-    let(:idea) { project.ideas.create user: user }
+    # NOTE: it's important here to not create the object through relation (user.projects.create...)
+    let!(:user) { User.create }
+    let!(:project) { Project.create user: user }
+    let!(:idea) { Idea.create user: user, project: project }
 
     it "uses same user ids by default" do
       expect(project.user_id).to eq(user.id)

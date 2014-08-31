@@ -8,13 +8,10 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.infer_base_class_for_anonymous_controllers = true
 
-  # config.around(:each) do |example|
-  #   # load "support/reset_models.rb"
-  #   # load "support/models.rb"
-  #   # example.run
-  #   # load "support/reset_models.rb"
-  #   # load "support/models.rb"
-  # end
+  config.before(:each) do
+    load "support/reset_models.rb"
+    load "support/load_models.rb"
+  end
 
   config.order = 'random'
 end
