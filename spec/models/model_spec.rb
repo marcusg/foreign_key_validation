@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe ForeignKeyValidation::ModelExtension do
 
+  # NOTE: it's important to not create the objects through relation (user.projects.create...)
+  #       it looks like active_record is caching the classes - but we need to test different class configs
+
   context "Without calling validation" do
 
-    # NOTE: it's important here to not create the object through relation (user.projects.create...)
-    #       it looks like active_record is caching the classes - but we need to test different class configs
     let(:user) { User.create }
     let(:project) { Project.create user: user }
     let(:idea) { Idea.create user: user, project: project }
@@ -55,8 +56,6 @@ describe ForeignKeyValidation::ModelExtension do
       Comment.send :validate_foreign_keys
     end
 
-    # NOTE: it's important here to not create the object through relation (user.projects.create...)
-    #       it looks like active_record is caching the classes - but we need to test different class configs
     let(:user) { User.create }
     let(:project) { Project.create user: user }
     let(:idea) { Idea.create user: user, project: project }
@@ -113,8 +112,6 @@ describe ForeignKeyValidation::ModelExtension do
       end
     end
 
-    # NOTE: it's important here to not create the object through relation (user.projects.create...)
-    #       it looks like active_record is caching the classes - but we need to test different class configs
     let(:user) { User.create }
     let(:project) { Project.create user: user }
     let(:idea) { Idea.create user: user, project: project }
@@ -158,8 +155,6 @@ describe ForeignKeyValidation::ModelExtension do
 
   context "With calling validation with wrong attributes hash" do
 
-    # NOTE: it's important here to not create the object through relation (user.projects.create...)
-    #       it looks like active_record is caching the classes - but we need to test different class configs
     let(:user) { User.create }
     let(:project) { Project.create user: user }
     let(:issue) { Issue.create user: user, project: project }
@@ -175,5 +170,46 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
+  context "With calling validation and missing foreign key on self" do
+
+    before do
+      Issue.class_eval do
+        validate_foreign_keys
+      end
+    end
+
+    let(:user) { User.create }
+    let(:project) { Project.create user: user }
+    let(:issue) { Issue.create project: project }
+
+    it "does not allow to rewrite user id of issue" do
+      issue.user_id = 42
+      issue.save
+      expect(issue.errors.messages.values.flatten).to include("user of project does not match issues user")
+      expect(issue.reload.user_id).to_not eq(42)
+    end
+
+  end
+
+  context "With calling validation and missing foreign key on relation" do
+
+    before do
+      Issue.class_eval do
+        validate_foreign_keys
+      end
+    end
+
+    let(:user) { User.create }
+    let(:project) { Project.create }
+    let(:issue) { Issue.create project: project, user: user }
+
+    it "allow to rewrite user id of issue" do
+      issue.user_id = 42
+      issue.save
+      issue.reload
+      expect(issue.user_id).to eq(42)
+    end
+
+  end
 
 end

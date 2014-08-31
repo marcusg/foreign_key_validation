@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Call `validate_foreign_keys` in your model. By default it assumes that it should check all foreign keys against the `user_id` column. So any relation (except `user`) will be checked for a matching `user_id` if the column exists.
+Call `validate_foreign_keys` below the association definitions (`belongs_to`, ...) in your model. By default it assumes that it should check all foreign keys against the `user_id` column. So any relation (except `user`) will be checked for a matching `user_id` if the column exists.
 
 Change behaviour by calling `validate_foreign_keys` with arguments hash.
 
