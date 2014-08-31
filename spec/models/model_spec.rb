@@ -5,7 +5,7 @@ describe ForeignKeyValidation::ModelExtension do
   # NOTE: it's important to not create the objects through relation (user.projects.create...)
   #       it looks like active_record is caching the classes - but we need to test different class configs
 
-  context "Without calling validation" do
+  context "without calling validation" do
 
     let(:user) { User.create }
     let(:project) { Project.create user: user }
@@ -48,7 +48,7 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
-  context "With calling validation" do
+  context "with calling validation" do
     before do
       Idea.send :validate_foreign_keys
       Project.send :validate_foreign_keys
@@ -105,7 +105,7 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
-  context "With calling validation with attributes hash" do
+  context "with calling validation with attributes hash" do
     before do
       Idea.class_eval do
         validate_foreign_keys on: :user, with: :project
@@ -153,12 +153,7 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
-  context "With calling validation with wrong attributes hash" do
-
-    let(:user) { User.create }
-    let(:project) { Project.create user: user }
-    let(:issue) { Issue.create user: user, project: project }
-    let(:comment) { Comment.create user: user, issue: issue }
+  context "with calling validation and wrong attributes hash" do
 
     it "raises error due to wrong :on key" do
       expect{Idea.class_eval { validate_foreign_keys on: :not_existing_id }}.to raise_error("No foreign key not_existing_id on ideas table!")
@@ -170,7 +165,16 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
-  context "With calling validation and missing foreign key on self" do
+  context "with calling validation and missing relations" do
+
+    it "raises error due to wrong :on key" do
+      expect{Dummy.class_eval { validate_foreign_keys }}.to raise_error("Can't find any belongs_to relations for Dummy class. Put validation call below association definitions")
+    end
+
+  end
+
+
+  context "with calling validation and missing foreign key on self" do
 
     before do
       Issue.class_eval do
@@ -191,7 +195,7 @@ describe ForeignKeyValidation::ModelExtension do
 
   end
 
-  context "With calling validation and missing foreign key on relation" do
+  context "with calling validation and missing foreign key on relation" do
 
     before do
       Issue.class_eval do

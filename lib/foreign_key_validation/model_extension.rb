@@ -19,6 +19,7 @@ module ForeignKeyValidation
         reflections       = reflect_on_all_associations(:belongs_to).map(&:name).map(&:to_s)
         validate_with     = ((Array(opt[:with]).map(&:to_s) if opt[:with]) || reflections).reject {|n| n == validate_against}
 
+        raise ArgumentError, "Can't find any belongs_to relations for #{name} class. Put validation call below association definitions" if reflections.empty?
         raise ArgumentError, "No foreign key #{validate_against} on #{table_name} table!" unless reflections.include?(validate_against)
         raise ArgumentError, "Unknown relation in #{validate_with}!" unless validate_with.all? {|k| reflections.include?(k) }
 

@@ -26,3 +26,6 @@ class Comment < ActiveRecord::Base
   belongs_to :issue
   belongs_to :user
 end
+
+class Dummy < ActiveRecord::Base
+end

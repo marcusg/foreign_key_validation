@@ -23,4 +23,7 @@ ActiveRecord::Schema.define do
     t.integer   "issue_id"
   end
 
+  create_table "dummies", force: true do |t|
+  end
+
 end
