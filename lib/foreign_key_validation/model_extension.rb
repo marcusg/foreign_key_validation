@@ -37,7 +37,7 @@ module ForeignKeyValidation
         end
         private "validate_foreign_keys_on_#{key_to_validate_against}".to_sym
 
-        # add before filter
+        # add before filter to validate key
         before_validation "validate_foreign_keys_on_#{key_to_validate_against}"
       end
     end

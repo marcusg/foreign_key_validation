@@ -8,6 +8,7 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.infer_base_class_for_anonymous_controllers = true
 
+  # reset and reload model classes for each run
   config.before(:each) do
     load "support/reset_models.rb"
     load "support/load_models.rb"
