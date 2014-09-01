@@ -12,6 +12,9 @@ describe ForeignKeyValidation::ModelExtension do
     let(:idea) { Idea.create user: user, project: project }
     let(:issue) { Issue.create user: user, project: project }
     let(:comment) { Comment.create user: user, issue: issue }
+    # sti model
+    let(:manager) { Manager.create user: user }
+    let(:developer) { Developer.create user: user, boss: manager }
 
     it "uses same user ids by default" do
       expect(project.user_id).to eq(user.id)
@@ -44,6 +47,13 @@ describe ForeignKeyValidation::ModelExtension do
       comment.save
       comment.reload
       expect(comment.user_id).to eq(42)
+    end
+
+    it "allow to rewrite user id of developer" do
+      developer.user_id = 42
+      developer.save
+      developer.reload
+      expect(developer.user_id).to eq(42)
     end
 
   end
