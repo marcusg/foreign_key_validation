@@ -29,7 +29,7 @@ ActiveRecord::Schema.define do
 
   create_table "members", force: true do |t|
     t.integer   "user_id"
-    t.integer   "manager_id"
+    t.integer   "boss_id"
     t.string    "type"
   end
 

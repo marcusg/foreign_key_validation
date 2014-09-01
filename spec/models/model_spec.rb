@@ -64,7 +64,7 @@ describe ForeignKeyValidation::ModelExtension do
     let(:comment) { Comment.create user: user, issue: issue }
     # sti model
     let(:manager) { Manager.create user: user }
-    let(:developer) { Developer.create user: user, manager: manager }
+    let(:developer) { Developer.create user: user, boss: manager }
 
     it "uses same user ids by default" do
       expect(project.user_id).to eq(user.id)
@@ -74,21 +74,21 @@ describe ForeignKeyValidation::ModelExtension do
     it "does not allow to rewrite user id of idea" do
       idea.user_id = 42
       idea.save
-      expect(idea.errors.messages.values.flatten).to include("user of project does not match ideas user")
+      expect(idea.errors.messages.values.flatten).to include("user_id of project does not match ideas user_id")
       expect(idea.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to rewrite user id of issue" do
       issue.user_id = 42
       issue.save
-      expect(issue.errors.messages.values.flatten).to include("user of project does not match issues user")
+      expect(issue.errors.messages.values.flatten).to include("user_id of project does not match issues user_id")
       expect(issue.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to rewrite user id of comment" do
       comment.user_id = 42
       comment.save
-      expect(comment.errors.messages.values.flatten).to include("user of issue does not match comments user")
+      expect(comment.errors.messages.values.flatten).to include("user_id of issue does not match comments user_id")
       expect(comment.reload.user_id).to_not eq(42)
     end
 
@@ -99,10 +99,10 @@ describe ForeignKeyValidation::ModelExtension do
       expect(project.reload.user_id).to eq(42)
     end
 
-    it "does not allow to rewrite user id of developer", focus: true do
+    it "does not allow to rewrite user id of developer" do
       developer.user_id = 42
       developer.save
-      # expect(developer.errors.messages.values.flatten).to include("user of issue does not match developers user")
+      expect(developer.errors.messages.values.flatten).to include("user_id of boss does not match developers user_id")
       expect(developer.reload.user_id).to_not eq(42)
     end
 
@@ -137,7 +137,7 @@ describe ForeignKeyValidation::ModelExtension do
     it "does not allow to rewrite user id of idea" do
       idea.user_id = 42
       idea.save
-      expect(idea.errors.messages.values.flatten).to include("user of project does not match ideas user")
+      expect(idea.errors.messages.values.flatten).to include("user_id of project does not match ideas user_id")
       expect(idea.reload.user_id).to_not eq(42)
     end
 
@@ -200,7 +200,7 @@ describe ForeignKeyValidation::ModelExtension do
     it "does not allow to rewrite user id of issue" do
       issue.user_id = 42
       issue.save
-      expect(issue.errors.messages.values.flatten).to include("user of project does not match issues user")
+      expect(issue.errors.messages.values.flatten).to include("user_id of project does not match issues user_id")
       expect(issue.reload.user_id).to_not eq(42)
     end
 
