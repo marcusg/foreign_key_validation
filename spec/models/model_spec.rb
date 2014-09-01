@@ -177,7 +177,7 @@ describe ForeignKeyValidation::ModelExtension do
   context "with calling validation and wrong attributes hash" do
 
     it "raises error due to wrong :on key" do
-      expect{Idea.class_eval { validate_foreign_keys on: :not_existing }}.to raise_error("No foreign key not_existing_id on ideas table!")
+      expect{Idea.class_eval { validate_foreign_keys on: :not_existing }}.to raise_error("No foreign key for relation not_existing on ideas table!")
     end
 
     it "raises error due to wrong :with key" do
