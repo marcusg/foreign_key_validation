@@ -1,6 +1,6 @@
 # foreign_key_validation
 
-Protect your models by specifying a collection of relations that should be tested for consistency with a predefined column (e.g. `user_id`).This is useful when the column `user_id` is used in multiple models. We can check if the `user_id` of `model a` matches `user_id` of `model b` before saving the records - if the IDs are different, an error will be attached to the errors hash of `self`. 
+Protect your models by specifying a collection of relations that should be tested for consistency with a predefined column (e.g. `user_id`).This is useful when the column `user_id` is used in multiple models. We can check if the `user_id` of *model A* matches `user_id` of *model B* before saving the records - if the IDs are different, an error will be attached to the errors hash of checked model. 
 
 ## Requirements
     ruby >= 1.9
