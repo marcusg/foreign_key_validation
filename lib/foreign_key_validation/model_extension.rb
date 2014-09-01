@@ -8,7 +8,7 @@ module ForeignKeyValidation
         return if send(reflection_name).try(validate_against_key).nil? or try(validate_against_key).nil?
 
         if send(reflection_name).send(validate_against_key) != send(validate_against_key)
-          errors.add(validate_against_key, "#{validate_against_key} of #{reflection_name} does not match #{self.class.name.tableize} #{validate_against_key}")
+          errors.add(validate_against_key, "#{validate_against_key} of #{reflection_name} does not match #{self.class.name.tableize} #{validate_against_key}.")
         end
       end
     end
@@ -23,7 +23,7 @@ module ForeignKeyValidation
         validate_against_key  = reflections.select {|r| r.name.to_s == validate_against}.first.try(:foreign_key)
         validate_with         = ((Array(opt[:with]).map(&:to_s) if opt[:with]) || reflection_names).reject {|n| n == validate_against}
 
-        raise ArgumentError, "Can't find any belongs_to relations for #{name} class. Put validation call below association definitions" if reflection_names.empty?
+        raise ArgumentError, "Can't find any belongs_to relations for #{name} class. Put validation call below association definitions!" if reflection_names.empty?
         raise ArgumentError, "No foreign key for relation #{validate_against} on #{table_name} table!" unless reflection_names.include?(validate_against)
         raise ArgumentError, "Unknown relation in #{validate_with}!" unless validate_with.all? {|k| reflection_names.include?(k) }
 
