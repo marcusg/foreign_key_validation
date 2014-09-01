@@ -46,5 +46,5 @@ class Manager < Member
 end
 
 class Developer < Member
-  belongs_to :boss, class_name: "Manager", foreign_key: :boss_id
+  belongs_to :boss, class_name: "Manager", foreign_key: :custom_boss_id
 end
