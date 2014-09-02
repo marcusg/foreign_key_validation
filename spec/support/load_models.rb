@@ -31,6 +31,7 @@ end
 class Comment < ActiveRecord::Base
   belongs_to :issue
   belongs_to :user
+  belongs_to :member
 end
 
 class Dummy < ActiveRecord::Base
@@ -39,6 +40,7 @@ end
 class Member < ActiveRecord::Base
   belongs_to :user
   has_many :projects
+  has_many :comments
 end
 
 class Manager < Member

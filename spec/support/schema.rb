@@ -22,6 +22,7 @@ ActiveRecord::Schema.define do
   create_table "comments", force: true do |t|
     t.integer   "user_id"
     t.integer   "issue_id"
+    t.integer   "member_id"
   end
 
   create_table "dummies", force: true do |t|
