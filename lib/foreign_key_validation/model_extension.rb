@@ -15,7 +15,7 @@ module ForeignKeyValidation
 
     module ClassMethods
       def validate_foreign_keys(opt={})
-        subclasses.map {|klass| klass.send(:validate_foreign_keys, opt) } if subclasses.any?
+        subclasses.map {|klass| klass.send(:validate_foreign_keys, opt)}
 
         validate_against      = (opt[:on] || :user).to_s
         reflections           = reflect_on_all_associations(:belongs_to)
@@ -25,7 +25,7 @@ module ForeignKeyValidation
 
         raise ArgumentError, "Can't find any belongs_to relations for #{name} class. Put validation call below association definitions!" if reflection_names.empty?
         raise ArgumentError, "No foreign key for relation #{validate_against} on #{table_name} table!" unless reflection_names.include?(validate_against)
-        raise ArgumentError, "Unknown relation in #{validate_with}!" unless validate_with.all? {|k| reflection_names.include?(k) }
+        raise ArgumentError, "Unknown relation in #{validate_with}!" unless validate_with.all? {|k| reflection_names.include?(k)}
 
         define_method "validate_foreign_keys_on_#{validate_against}" do
           validate_with.each do |reflection_name|
