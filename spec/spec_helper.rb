@@ -2,6 +2,8 @@ require "rails/all"
 require 'foreign_key_validation'
 require 'rspec/rails'
 require 'pry'
+require 'database_cleaner'
+
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
@@ -12,6 +14,17 @@ RSpec.configure do |config|
   config.before(:each) do
     load "support/reset_models.rb"
     load "support/load_models.rb"
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   config.order = 'random'

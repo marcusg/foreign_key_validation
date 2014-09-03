@@ -27,6 +27,13 @@ describe ForeignKeyValidation::ModelExtension do
       expect(developer.user_id).to eq(user.id)
     end
 
+    it "allow to rewrite user id of idea with random id" do
+      idea.user_id = 42
+      idea.save
+      idea.reload
+      expect(idea.user_id).to eq(42)
+    end
+
     it "allow to rewrite user id of idea" do
       idea.user_id = other_user.id
       idea.save
@@ -80,20 +87,14 @@ describe ForeignKeyValidation::ModelExtension do
       Member.send :validate_foreign_keys
     end
 
-
     let(:project) { Project.create user: user }
     let(:other_project) { Project.create user: other_user }
-
     let(:idea) { Idea.create user: user, project: project }
-
     let(:issue) { Issue.create user: user, project: project }
     let(:other_issue) { Issue.create user: other_user, project: other_project }
-
     let(:comment) { Comment.create user: user, issue: issue }
-
     let(:manager) { Manager.create user: user }
     let(:other_manager) { Manager.create user: User.create }
-
     let(:developer) { Developer.create user: user, boss: manager }
 
     it "uses same user ids by default" do
@@ -110,6 +111,13 @@ describe ForeignKeyValidation::ModelExtension do
       idea.save
       expect(idea.errors.messages.values.flatten).to include("user_id of project does not match ideas user_id.")
       expect(idea.reload.user_id).to_not eq(other_user.id)
+    end
+
+    it "does not allow to rewrite user id of idea with random id" do
+      idea.user_id = 42
+      idea.save
+      expect(idea.errors.messages.values.flatten).to include("user_id of project does not match ideas user_id.")
+      expect(idea.reload.user_id).to_not eq(42)
     end
 
     it "does not allow to rewrite project id of idea" do
@@ -191,15 +199,11 @@ describe ForeignKeyValidation::ModelExtension do
       end
     end
 
-
     let(:project) { Project.create user: user }
     let(:other_project) { Project.create user: other_user }
-
     let(:issue) { Issue.create user: user, project: project }
     let(:other_issue) { Issue.create user: other_user, project: other_project }
-
     let(:comment) { Comment.create user: user, issue: issue }
-
     let(:manager) { Manager.create user: user }
     let(:other_manager) { Manager.create user: User.create }
 
@@ -215,6 +219,14 @@ describe ForeignKeyValidation::ModelExtension do
       comment.save
       expect(comment.errors.messages.values.flatten).to include("user_id of issue does not match comments user_id.")
       expect(comment.reload.issue_id).to_not eq(other_issue.id)
+    end
+
+    # NOTE: bug or feature? Writing non existing ids bypasses checking of user_id becaue no record can be found...
+    it "does allow to rewrite issue id of comment with random id" do
+      comment.issue_id = 42
+      comment.save
+      comment.reload
+      expect(comment.issue_id).to eq(42)
     end
 
     it "allow to rewrite member id of comment" do
@@ -283,6 +295,14 @@ describe ForeignKeyValidation::ModelExtension do
       expect(issue.reload.user_id).to_not eq(other_user.id)
     end
 
+    it "does not allow to rewrite user id of issue with random id" do
+      issue.user_id = 42
+      issue.save
+      expect(issue.errors.messages.values.flatten).to include("user_id of project does not match issues user_id.")
+      expect(issue.reload.user_id).to_not eq(42)
+    end
+
+
   end
 
   context "with calling validation and missing foreign key on relation" do
@@ -294,6 +314,7 @@ describe ForeignKeyValidation::ModelExtension do
     end
 
     let(:project) { Project.create }
+    let(:other_project) { Project.create }
     let(:issue) { Issue.create project: project, user: user }
 
     it "allow to rewrite user id of issue" do
@@ -301,6 +322,13 @@ describe ForeignKeyValidation::ModelExtension do
       issue.save
       issue.reload
       expect(issue.user_id).to eq(other_user.id)
+    end
+
+    it "allow to rewrite project id of issue" do
+      issue.project_id = other_project.id
+      issue.save
+      issue.reload
+      expect(issue.project_id).to eq(other_project.id)
     end
 
   end
