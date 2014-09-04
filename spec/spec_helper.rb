@@ -3,9 +3,7 @@ require 'foreign_key_validation'
 require 'rspec/rails'
 require 'pry'
 require 'database_cleaner'
-require 'coveralls'
 
-Coveralls.wear!
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
