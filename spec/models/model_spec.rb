@@ -221,7 +221,8 @@ describe ForeignKeyValidation::ModelExtension do
       expect(comment.reload.issue_id).to_not eq(other_issue.id)
     end
 
-    # NOTE: bug or feature? Writing non existing ids bypasses checking of user_id becaue no record can be found...
+    # NOTE: this is possible here because Issue model is not configured to check ids
+    #       comment model can only check id against issue model if it is present
     it "does allow to rewrite issue id of comment with random id" do
       comment.issue_id = 42
       comment.save
