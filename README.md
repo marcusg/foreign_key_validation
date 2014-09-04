@@ -1,6 +1,5 @@
 # foreign_key_validation
 
-[![Coverage Status](https://coveralls.io/repos/marcusg/foreign_key_validation/badge.png)](https://coveralls.io/r/marcusg/foreign_key_validation)
 [![Code Climate](https://codeclimate.com/github/marcusg/foreign_key_validation/badges/gpa.svg)](https://codeclimate.com/github/marcusg/foreign_key_validation)
 [![Build Status](https://travis-ci.org/marcusg/foreign_key_validation.svg?branch=master)](https://travis-ci.org/marcusg/foreign_key_validation)
 
