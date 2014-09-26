@@ -16,6 +16,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
+    puts "Running specs against Rails #{Rails.version}" if defined?(Rails)
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
