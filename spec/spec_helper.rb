@@ -1,7 +1,6 @@
 require "rails/all"
 require 'foreign_key_validation'
 require 'rspec/rails'
-require 'pry'
 require 'database_cleaner'
 
 
