@@ -38,6 +38,14 @@ This would only check `model.project.admin_user_id` to match `model.admin_user_i
 
 Only tested with ActiveRecord
 
+## Tests
+
+Use these commands to run the testsuite against different versions of Rails
+
+    bundle
+    appraisal install
+    appraisal rspec
+
 
 ## Contributing
 
