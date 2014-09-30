@@ -1,8 +1,3 @@
-Object.send(:remove_const, :User)       if Object.constants.include?(:User)
-Object.send(:remove_const, :Project)    if Object.constants.include?(:Project)
-Object.send(:remove_const, :Idea)       if Object.constants.include?(:Idea)
-Object.send(:remove_const, :Issue)      if Object.constants.include?(:Issue)
-Object.send(:remove_const, :Comment)    if Object.constants.include?(:Comment)
-Object.send(:remove_const, :Member)     if Object.constants.include?(:Member)
-Object.send(:remove_const, :Developer)  if Object.constants.include?(:Developer)
-Object.send(:remove_const, :Manager)    if Object.constants.include?(:Manager)
+ActiveRecord::Base.descendants.each do |klass|
+  Object.send(:remove_const, klass.name.to_sym) if Object.constants.include?(klass.name.to_sym)
+end
