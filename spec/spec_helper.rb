@@ -2,6 +2,7 @@ require "rails/all"
 require 'foreign_key_validation'
 require 'rspec/rails'
 require 'database_cleaner'
+require 'pry'
 
 
 RSpec.configure do |config|
