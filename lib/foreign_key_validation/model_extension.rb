@@ -2,14 +2,11 @@ module ForeignKeyValidation
   module ModelExtension
     extend ActiveSupport::Concern
 
+
     included do
       private
-      def validate_foreign_key(validate_against_key, reflection_name)
-        return if send(reflection_name).try(validate_against_key).nil? or try(validate_against_key).nil?
-
-        if send(reflection_name).send(validate_against_key) != send(validate_against_key)
-          errors.add(validate_against_key, "#{validate_against_key} of #{reflection_name} does not match #{self.class.name.tableize} #{validate_against_key}.")
-        end
+      def validate_foreign_key(opt={})
+        Validator.validate(opt.merge(object: self))
       end
     end
 
@@ -17,17 +14,15 @@ module ForeignKeyValidation
       def validate_foreign_keys(opt={})
         subclasses.map {|klass| klass.send(:validate_foreign_keys, opt)}
 
-        validator = Validator.new(self, opt)
-        validator.check
+        collector = Collector.new(opt.merge(klass: self))
+        collector.check!
 
-        define_method validator.filter_method_name do
-          validator.validate_with.each do |reflection_name|
-            validate_foreign_key(validator.validate_against_key, reflection_name)
+        Filter.new(collector).before_filter do
+          collector.validate_with.each do |reflection_name|
+            validate_foreign_key(validate_against_key: collector.validate_against_key, reflection_name: reflection_name)
           end
         end
-        private validator.filter_method_name.to_sym
 
-        before_validation validator.filter_method_name
       end
     end
   end
