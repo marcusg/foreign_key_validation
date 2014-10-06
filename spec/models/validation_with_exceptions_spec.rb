@@ -10,10 +10,6 @@ describe ForeignKeyValidation::ModelExtension do
 
     let(:issue) { Issue.create }
 
-    it "does not allow to call private validate_foreign_key method" do
-      expect{issue.validate_foreign_key("test", "unrat")}.to raise_exception(/private method `validate_foreign_key' called/)
-    end
-
     it "does not allow to call private validate_foreign_keys_on_* methods" do
       expect{issue.validate_foreign_keys_on_user}.to raise_exception(/private method `validate_foreign_keys_on_user' called/)
     end
