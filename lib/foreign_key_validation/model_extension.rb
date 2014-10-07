@@ -11,7 +11,7 @@ module ForeignKeyValidation
         collector.check!
 
         Filter.new(collector).before_filter do
-          Validator.validate(validate_against_key: collector.validate_against_key, reflection_names: collector.validate_with, object: self)
+          Validator.new(validate_against_key: collector.validate_against_key, reflection_names: collector.validate_with, object: self).validate
         end
       end
 
