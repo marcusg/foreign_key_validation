@@ -10,6 +10,7 @@ module ForeignKeyValidation
     def before_filter(&block)
       collector.klass.send :define_method, filter_name do
         self.instance_eval &block
+        return true
       end
       collector.klass.send :private, filter_name.to_sym
       collector.klass.send :before_validation, filter_name

@@ -6,15 +6,20 @@ module ForeignKeyValidation
 
     def initialize(opt={})
       self.validate_against_key = opt[:validate_against_key]
-      self.reflection_names     = opt[:reflection_names]
+      self.reflection_names     = opt[:reflection_names] || []
       self.object               = opt[:object]
     end
 
     def validate
+      has_errors = false
       reflection_names.each do |reflection_name|
         next unless keys_present?(reflection_name)
-        attach_errors(reflection_name) if keys_different?(reflection_name)
+        if keys_different?(reflection_name)
+          attach_error(reflection_name)
+          has_errors = true
+        end
       end
+      has_errors
     end
 
     private
@@ -35,7 +40,7 @@ module ForeignKeyValidation
       key_on_object != key_on_relation(relation)
     end
 
-    def attach_errors(reflection_name)
+    def attach_error(reflection_name)
       object.errors.add(validate_against_key, "#{validate_against_key} of #{reflection_name} does not match #{object.class.name.tableize} #{validate_against_key}.")
     end
 
