@@ -41,7 +41,7 @@ module ForeignKeyValidation
     end
 
     def attach_error(reflection_name)
-      object.errors.add(validate_against_key, "#{validate_against_key} of #{reflection_name} does not match #{object.class.name.tableize} #{validate_against_key}.")
+      object.errors.add(validate_against_key, ForeignKeyValidation.configuration.error_message.call(validate_against_key, reflection_name, object))
     end
 
   end
