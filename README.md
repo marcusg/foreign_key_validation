@@ -41,7 +41,7 @@ You can customize the behaviour of the gem by calling the `configure` method on 
 
     ForeignKeyValidation.configure do |config|
       config.error_message      = proc { |key, name, object| "My custom msg!" }
-      config.inject_subclasses  = true
+      config.inject_subclasses  = false # default: true
     end
 
 ## Note
