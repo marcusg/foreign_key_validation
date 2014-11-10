@@ -12,7 +12,6 @@ describe ForeignKeyValidation::ModelExtension do
   context "with custom error message without vars" do
 
     before do
-      ForeignKeyValidation.configuration = nil
       ForeignKeyValidation.configure {|c| c.error_message = proc {"CUSTOM MSG!"} }
       Member.send :validate_foreign_keys
     end
@@ -36,7 +35,6 @@ describe ForeignKeyValidation::ModelExtension do
   context "with custom error message with vars" do
 
     before do
-      ForeignKeyValidation.configuration = nil
       ForeignKeyValidation.configure {|c| c.error_message = proc {|a,b,c| "#{a} #{b} #{c.id}"} }
       Member.send :validate_foreign_keys
     end
@@ -60,7 +58,6 @@ describe ForeignKeyValidation::ModelExtension do
   context "without injecting subclasses via config block" do
 
     before do
-      ForeignKeyValidation.configuration = nil
       Member.send :validate_foreign_keys
     end
 
@@ -83,7 +80,6 @@ describe ForeignKeyValidation::ModelExtension do
   context "with injecting subclasses set to true via config block" do
 
     before do
-      ForeignKeyValidation.configuration = nil
       ForeignKeyValidation.configure {|c| c.inject_subclasses = true }
       Member.send :validate_foreign_keys
     end
@@ -108,7 +104,6 @@ describe ForeignKeyValidation::ModelExtension do
   context "with injecting subclasses set to false via config block" do
 
     before do
-      ForeignKeyValidation.configuration = nil
       ForeignKeyValidation.configure {|c| c.inject_subclasses = false }
       Member.send :validate_foreign_keys
     end
