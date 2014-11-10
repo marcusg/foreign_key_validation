@@ -10,8 +10,8 @@ module ForeignKeyValidation
 
   DEFAULT_CONFIG = {
     inject_subclasses: true,
-    error_message: proc { |validate_against_key, reflection_name, object|
-      "#{validate_against_key} of #{reflection_name} does not match #{object.class.name.tableize} #{validate_against_key}."
+    error_message: proc { |key, reflection_name, object|
+      "#{key} of #{reflection_name} does not match #{object.class.name.tableize} #{key}."
     }
   }
 
