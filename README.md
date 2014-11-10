@@ -35,6 +35,15 @@ Change behaviour by calling `validate_foreign_keys` with arguments hash.
 
 This would only check `model.project.admin_user_id` to match `model.admin_user_id` before saving the record.
 
+## Configuration
+
+You can customize the behaviour of the gem by calling the `configure` method on the module with a block (e.g. initializer).
+
+    ForeignKeyValidation.configure do |config|
+      config.error_message      = proc { |key, name, object| "My custom msg!" }
+      config.inject_subclasses  = true
+    end
+
 ## Note
 
 Only tested with ActiveRecord
