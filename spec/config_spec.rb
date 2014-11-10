@@ -19,6 +19,10 @@ describe ForeignKeyValidation do
       expect(subject.configuration.error_message.call).to match /does not match/
     end
 
+    it "defaults to :user for validate against key" do
+      expect(subject.configuration.validate_against).to eq :user
+    end
+
   end
 
 end

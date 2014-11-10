@@ -3,8 +3,6 @@ module ForeignKeyValidation
   class Collector
     attr_accessor :options
 
-    DEFAULT_VALIDATE_AGAINST = :user
-
     def initialize(opt={})
       self.options = opt
     end
@@ -21,7 +19,7 @@ module ForeignKeyValidation
     end
 
     def validate_against
-      @validate_against ||= (options[:on] || DEFAULT_VALIDATE_AGAINST).to_s
+      @validate_against ||= (options[:on] || ForeignKeyValidation.configuration.validate_against).to_s
     end
 
     def validate_with

@@ -37,11 +37,12 @@ This would only check `model.project.admin_user_id` to match `model.admin_user_i
 
 ## Configuration
 
-You can customize the behaviour of the gem by calling the `configure` method on the module with a block (e.g. initializer).
+You can customize the default behaviour of the gem by calling the `configure` method on the module with a block (e.g. initializer).
 
     ForeignKeyValidation.configure do |config|
       config.error_message      = proc { |key, name, object| "My custom msg!" }
-      config.inject_subclasses  = false # default: true
+      config.inject_subclasses  = false     # default: true
+      config.validate_against   = :admin    # default: :user
     end
 
 ## Note
