@@ -1,16 +1,16 @@
 require 'coveralls'
 Coveralls.wear!
 
-require "rails/all"
+require 'active_support'
+require 'active_record'
 require 'foreign_key_validation'
-require 'rspec/rails'
+require 'rspec'
 require 'database_cleaner'
 require 'pry'
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
-  config.infer_base_class_for_anonymous_controllers = true
 
   # reset and reload model classes for each run
   config.before(:each) do
@@ -20,7 +20,6 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    puts "Running specs against Rails #{Rails.version}" if defined?(Rails)
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end

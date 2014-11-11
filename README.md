@@ -8,8 +8,9 @@
 Protect your models by specifying a collection of relations that should be tested for consistency with a predefined column (e.g. `user_id`).This is useful when the column `user_id` is used in multiple models. We can check if the `user_id` of *model A* matches `user_id` of *model B* before saving the records - if the IDs are different, an error will be attached to the errors hash of checked model.
 
 ## Requirements
+
     ruby >= 1.9.3
-    rails >= 3.2.0
+    active_record & active_support >= 3.2.0
 
 ## Installation
 
@@ -45,18 +46,13 @@ You can customize the default behaviour of the gem by calling the `configure` me
       config.validate_against   = :admin    # default: :user
     end
 
-## Note
-
-Only tested with ActiveRecord
-
 ## Tests
 
-Use these commands to run the testsuite against different versions of Rails
+Use these commands to run the testsuite against different versions of ActiveRecord
 
     bundle
     appraisal install
     appraisal rspec
-
 
 ## Contributing
 
