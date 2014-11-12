@@ -17,12 +17,14 @@ describe ForeignKeyValidation::Collector do
 
   describe "#check!" do
 
+    subject { ForeignKeyValidation::Collector }
+
     it "returns true for known class" do
-      expect(ForeignKeyValidation::Collector.new(klass: Issue).check!).to be true
+      expect(subject.new(klass: Issue).check!).to be true
     end
 
     it "raises error for class without relations" do
-      expect{ForeignKeyValidation::Collector.new(klass: Dummy).check!}.to raise_error(ForeignKeyValidation::Errors::NoReleationFoundError)
+      expect{subject.new(klass: Dummy).check!}.to raise_error(ForeignKeyValidation::Errors::NoReleationFoundError)
     end
 
   end
