@@ -14,7 +14,7 @@ RSpec.configure do |config|
 
   # reset and reload model classes for each run
   config.before(:each) do
-    ForeignKeyValidation.configuration = nil
+    ForeignKeyValidation.reset_configuration
     load "support/reset_models.rb"
     load "support/load_models.rb"
   end

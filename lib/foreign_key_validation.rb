@@ -17,15 +17,19 @@ module ForeignKeyValidation
   }
 
   class << self
-    attr_writer :configuration
 
-    def configure(&blk)
+    def configure
       yield configuration
     end
 
     def configuration
       @configuration ||= OpenStruct.new(DEFAULT_CONFIG)
     end
+
+    def reset_configuration
+      @configuration = nil
+    end
+
   end
 end
 
