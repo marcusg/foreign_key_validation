@@ -2,12 +2,12 @@ module ForeignKeyValidation
 
   class Validator
 
-    attr_accessor :validate_against_key, :reflection_names, :object
+    attr_accessor :collector, :object
+    delegate :validate_against_key, :validate_with, to: :collector
 
-    def initialize(opt={})
-      self.validate_against_key = opt.fetch(:validate_against_key, nil)
-      self.reflection_names     = opt.fetch(:reflection_names, [])
-      self.object               = opt.fetch(:object, nil)
+    def initialize(collector, object)
+      self.collector  = collector
+      self.object     = object
     end
 
     def validate
@@ -17,7 +17,7 @@ module ForeignKeyValidation
     private
 
     def invalid_reflection_names(&block)
-      reflection_names.each do |reflection_name|
+      (validate_with || []).each do |reflection_name|
         next unless keys_present?(reflection_name)
         yield reflection_name if keys_different?(reflection_name)
       end
