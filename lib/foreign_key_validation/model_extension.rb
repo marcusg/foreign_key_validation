@@ -5,7 +5,7 @@ module ForeignKeyValidation
     module ClassMethods
 
       def validate_foreign_keys(opt={})
-        descendants.map {|klass| klass.send(:validate_foreign_keys, opt)} if ForeignKeyValidation.configuration.inject_subclasses
+        descendants.map {|klass| klass.public_send(:validate_foreign_keys, opt)} if ForeignKeyValidation.configuration.inject_subclasses
 
         collector = Collector.new(opt.merge(klass: self))
         collector.check!

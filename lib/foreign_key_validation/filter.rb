@@ -13,7 +13,7 @@ module ForeignKeyValidation
         return true
       end
       collector.klass.send :private, filter_name.to_sym
-      collector.klass.send :before_validation, filter_name
+      collector.klass.public_send :before_validation, filter_name
     end
 
     private
