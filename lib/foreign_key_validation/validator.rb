@@ -3,7 +3,6 @@ module ForeignKeyValidation
   class Validator
 
     attr_accessor :collector, :object
-    delegate :validate_against_key, :validate_with, to: :collector
 
     def initialize(collector, object)
       self.collector  = collector
@@ -45,6 +44,14 @@ module ForeignKeyValidation
 
     def error_message(reflection_name)
       ForeignKeyValidation.configuration.error_message.call(validate_against_key, reflection_name, object)
+    end
+
+    def validate_against_key
+      collector.validate_against_key
+    end
+
+    def validate_with
+      collector.validate_with
     end
 
   end
