@@ -11,21 +11,22 @@ module ForeignKeyValidation
     end
 
     def validate
-      has_errors = false
-      reflection_names.each do |reflection_name|
-        next unless keys_present?(reflection_name)
-        if keys_different?(reflection_name)
-          attach_error(reflection_name)
-          has_errors = true
-        end
-      end
-      has_errors
+      to_enum(:invalid_reflection_names).map {|n| attach_error(n) }.any?
     end
 
     private
 
+    def invalid_reflection_names(&block)
+      reflection_names.each do |reflection_name|
+        next unless keys_present?(reflection_name)
+        if keys_different?(reflection_name)
+          yield reflection_name
+        end
+      end
+    end
+
     def key_on_relation(relation)
-      object.send(relation).try(validate_against_key)
+      object.public_send(relation).try(validate_against_key)
     end
 
     def key_on_object
