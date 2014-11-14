@@ -15,15 +15,15 @@ module ForeignKeyValidation
     end
 
     def klass
-      @klass ||= options[:klass]
+      @klass ||= options.fetch(:klass)
     end
 
     def validate_against
-      @validate_against ||= (options[:on] || ForeignKeyValidation.configuration.validate_against).to_s
+      @validate_against ||= options.fetch(:on, ForeignKeyValidation.configuration.validate_against).to_s
     end
 
     def validate_with
-      @validate_with ||= ((Array(options[:with]).map(&:to_s) if options[:with]) || reflection_names).reject {|n| n == validate_against}
+      @validate_with ||= Array(options.fetch(:with, reflection_names)).map(&:to_s).reject {|n| n == validate_against}
     end
 
     def reflections

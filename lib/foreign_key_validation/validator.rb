@@ -5,9 +5,9 @@ module ForeignKeyValidation
     attr_accessor :validate_against_key, :reflection_names, :object
 
     def initialize(opt={})
-      self.validate_against_key = opt[:validate_against_key]
-      self.reflection_names     = opt[:reflection_names] || []
-      self.object               = opt[:object]
+      self.validate_against_key = opt.fetch(:validate_against_key, nil)
+      self.reflection_names     = opt.fetch(:reflection_names, [])
+      self.object               = opt.fetch(:object, nil)
     end
 
     def validate
@@ -19,9 +19,7 @@ module ForeignKeyValidation
     def invalid_reflection_names(&block)
       reflection_names.each do |reflection_name|
         next unless keys_present?(reflection_name)
-        if keys_different?(reflection_name)
-          yield reflection_name
-        end
+        yield reflection_name if keys_different?(reflection_name)
       end
     end
 
@@ -42,7 +40,11 @@ module ForeignKeyValidation
     end
 
     def attach_error(reflection_name)
-      object.errors.add(validate_against_key, ForeignKeyValidation.configuration.error_message.call(validate_against_key, reflection_name, object))
+      object.errors.add(validate_against_key, error_message(reflection_name))
+    end
+
+    def error_message(reflection_name)
+      ForeignKeyValidation.configuration.error_message.call(validate_against_key, reflection_name, object)
     end
 
   end
