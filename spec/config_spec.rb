@@ -14,7 +14,7 @@ describe ForeignKeyValidation do
 
     it "defaults to proc for error messages" do
       expect(subject.configuration.error_message).to be_a Proc
-      expect(subject.configuration.error_message.call).to match /does not match/
+      expect(subject.configuration.error_message.call(nil,nil,nil)).to match /does not match/
     end
 
     it "defaults to :user for validate against key" do

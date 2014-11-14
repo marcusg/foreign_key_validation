@@ -41,7 +41,7 @@ This would only check `model.project.admin_user_id` to match `model.admin_user_i
 You can customize the default behaviour of the gem by calling the `configure` method on the module with a block (e.g. initializer).
 
     ForeignKeyValidation.configure do |config|
-      config.error_message      = proc { |key, name, object| "My custom msg!" }
+      config.error_message      = lambda { |key, name, object| "My custom msg!" }
       config.inject_subclasses  = false     # default: true
       config.validate_against   = :admin    # default: :user
     end

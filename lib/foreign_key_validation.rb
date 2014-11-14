@@ -11,7 +11,7 @@ module ForeignKeyValidation
   DEFAULT_CONFIG = {
     inject_subclasses: true,
     validate_against: :user,
-    error_message: proc { |key, reflection_name, object|
+    error_message: lambda { |key, reflection_name, object|
       "#{key} of #{reflection_name} does not match #{object.class.name.tableize} #{key}."
     }
   }
