@@ -5,7 +5,7 @@ module ForeignKeyValidation
 
     def initialize(opt={})
       self.options = opt
-      raise_if_params_invalid
+      check_params!
     end
 
     def klass
@@ -34,7 +34,7 @@ module ForeignKeyValidation
       @reflection_names ||= reflections.map {|r| r.name.to_s }
     end
 
-    def raise_if_params_invalid
+    def check_params!
       raise Errors::NoReleationFoundError.new(klass.name) if reflection_names.empty?
       raise Errors::NoForeignKeyFoundError.new(validate_against, klass.table_name) unless reflection_names.include?(validate_against)
       raise Errors::UnknownRelationError.new(validate_with) unless validate_with.all? {|k| reflection_names.include?(k)}
