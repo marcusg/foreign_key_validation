@@ -17,7 +17,7 @@ appraise "4.1" do
 end
 
 appraise "4.2" do
-  gem "activerecord", "~> 4.2.0.beta4"
-  gem "activesupport", "~> 4.2.0.beta4"
+  gem "activerecord", "~> 4.2.0"
+  gem "activesupport", "~> 4.2.0"
   gemspec
 end
