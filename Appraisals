@@ -21,3 +21,10 @@ appraise "4.2" do
   gem "activesupport", "~> 4.2.0"
   gemspec
 end
+
+appraise "5.0" do
+  # change to just require activerecord and activesupport after release
+  gem "rails", github: "rails/rails"
+  gem "arel", github: "rails/arel"
+  gemspec
+end

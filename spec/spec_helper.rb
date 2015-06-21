@@ -37,4 +37,5 @@ setup_sqlite_db = lambda do
   ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
   load "support/schema.rb"
 end
-silence_stream(STDOUT, &setup_sqlite_db)
+
+respond_to?(:silence_stream) ? silence_stream(STDOUT, &setup_sqlite_db) : setup_sqlite_db.call
